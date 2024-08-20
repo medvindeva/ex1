@@ -4,48 +4,30 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import skew, kurtosis
 from sklearn.datasets import load_iris
-
-# Load the Iris dataset
 iris = load_iris()
 df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
 df['species'] = iris.target_names[iris.target]
-
-# Select an attribute (e.g., 'sepal length (cm)')
 attribute = 'sepal length (cm)'
-
-# Print the first five rows
 print("First five rows of the dataset:")
 print(df.head())
-
-# Plot histogram and KDE for the selected attribute
 plt.figure(figsize=(14, 6))
-
-# Histogram
 plt.subplot(1, 2, 1)
 sns.histplot(df[attribute], kde=False, bins=20, color='skyblue')
 plt.title(f'Histogram of {attribute}')
 plt.xlabel(attribute)
 plt.ylabel('Frequency')
-
-# KDE
 plt.subplot(1, 2, 2)
 sns.kdeplot(df[attribute], color='skyblue')
 plt.title(f'KDE of {attribute}')
 plt.xlabel(attribute)
 plt.ylabel('Density')
-
 plt.tight_layout()
 plt.show()
-
-# Probability distribution (normalized histogram)
 hist, bin_edges = np.histogram(df[attribute], bins=20, density=True)
 bin_centers = 0.5 * (bin_edges[1:] + bin_edges[:-1])
-
 print("\nProbability distribution (histogram) of the selected attribute:")
 for center, prob in zip(bin_centers, hist):
     print(f"Bin center: {center:.2f}, Probability: {prob:.4f}")
-
-# Calculate skewness and kurtosis
 attr_data = df[attribute]
 attr_skewness = skew(attr_data)
 attr_kurtosis = kurtosis(attr_data)
